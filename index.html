@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Storyweaver</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:,">
+
+<style>
+:root {
+  --paper: #FBF3E4;
+  --paper-dim: #F3E8D2;
+  --ink: #24263B;
+  --berry: #A63446;
+  --berry-dark: #7E2434;
+  --gold: #C99A3C;
+  --sage: #5D8A66;
+  --line: rgba(36, 38, 59, 0.14);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Nunito Sans', sans-serif;
+  min-height: 100vh;
+}
+
+.wrap {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 40px 24px 100px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--berry);
+  font-weight: 800;
+}
+
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 700;
+  font-size: 46px;
+  line-height: 1.05;
+  margin: 10px 0 14px;
+}
+
+h1 em {
+  color: var(--berry);
+  font-style: normal;
+}
+
+header p {
+  font-size: 16px;
+  color: rgba(36,38,59,0.66);
+  max-width: 460px;
+  margin: 0 auto;
+}
+
+.page {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  box-shadow: 0 18px 40px -22px rgba(36,38,59,0.25);
+  position: relative;
+}
+
+.page::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 22px;
+  bottom: 22px;
+  width: 3px;
+  background: var(--gold);
+}
+
+.dropzone {
+  padding: 40px 32px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.dropzone.dragover {
+  background: var(--paper-dim);
+}
+
+.quill {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto 14px;
+  color: var(--berry);
+}
+
+.drop-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 20px;
+  margin: 0 0 6px;
+}
+
+.drop-sub {
+  font-size: 14px;
+  color: rgba(36,38,59,0.55);
+  margin: 0 0 18px;
+}
+
+.browse-btn {
+  background: var(--berry);
+  color: #fff;
+  border: none;
+  padding: 11px 22px;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.browse-btn:hover {
+  background: var(--berry-dark);
+}
+
+#fileInput {
+  display: none;
+}
+
+.filename-chip {
+  display: none;
+  margin-left: 8px;
+  font-size: 13px;
+  background: var(--paper-dim);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+.upload-status {
+  font-size: 13px;
+  margin-top: 14px;
+  min-height: 18px;
+  color: rgba(36,38,59,0.6);
+}
+
+.upload-status.error {
+  color: var(--berry);
+  font-weight: 700;
+}
+
+.upload-status.success {
+  color: var(--sage);
+  font-weight: 700;
+}
+
+.shelf-heading {
+  display: flex;
+  justify-content: space-between;
+  margin: 52px 0 16px;
+}
+
+.shelf-heading h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 22px;
+  margin: 0;
+}
+
+.shelf-heading span {
+  font-size: 12px;
+  color: rgba(36,38,59,0.45);
+}
+
+.empty-shelf {
+  text-align: center;
+  padding: 40px 20px;
+  color: rgba(36,38,59,0.5);
+  border: 1px dashed var(--line);
+  background: rgba(255,255,255,0.4);
+}
+
+.story-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 18px 20px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ribbon {
+  position: absolute;
+  top: 0;
+  right: 18px;
+  width: 20px;
+  height: 30px;
+  background: var(--gold);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 78%, 0 100%);
+}
+
+.ribbon.completed { background: var(--sage); }
+.ribbon.failed { background: var(--berry); }
+.ribbon.processing { background: var(--gold); }
+
+.story-info {
+  flex: 1;
+}
+
+.story-title {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: 17px;
+  margin: 0 0 4px;
+}
+
+.story-meta {
+  font-size: 12px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.status-dot.completed { background: var(--sage); }
+.status-dot.failed { background: var(--berry); }
+.status-dot.processing { background: var(--gold); }
+
+.status-label.completed { color: var(--sage); }
+.status-label.failed { color: var(--berry); }
+.status-label.processing { color: var(--gold); }
+
+.story-audio {
+  height: 36px;
+  max-width: 260px;
+}
+
+@media (max-width: 520px) {
+  h1 { font-size: 34px; }
+  .story-card {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .story-audio {
+    max-width: 100%;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Storyweaver</div>
+  <h1>Turn a page of words<br>into a page <em>read aloud</em>.</h1>
+  <p>Upload a .txt story and it comes back narrated — ready to press play on.</p>
+</header>
+
+<div class="page">
+  <div class="dropzone" id="dropzone">
+    <svg class="quill" viewBox="0 0 48 48" fill="none">
+      <path d="M40 8C28 8 14 18 10 34L6 42L14 38C30 34 40 20 40 8Z" stroke="currentColor" stroke-width="2"/>
+      <path d="M10 34C16 30 24 24 30 18" stroke="currentColor" stroke-width="2"/>
+    </svg>
+
+    <p class="drop-title">Add your story</p>
+    <p class="drop-sub">Drop a .txt file here, or choose one from your computer</p>
+
+    <button type="button" class="browse-btn" id="browseBtn">Choose a file</button>
+    <input type="file" id="fileInput" accept=".txt,text/plain">
+
+    <span class="filename-chip" id="filenameChip"></span>
+    <div class="upload-status" id="uploadStatus"></div>
+  </div>
+</div>
+
+<div class="shelf-heading">
+  <h2>Your stories</h2>
+  <span id="shelfCount"></span>
+</div>
+
+<div id="storyList"></div>
+
+</div>
+
+<script>
+const API_BASE_URL = "https://j905rxgzkl.execute-api.ap-south-1.amazonaws.com/prod";
+
+const dropzone = document.getElementById("dropzone");
+const fileInput = document.getElementById("fileInput");
+const browseBtn = document.getElementById("browseBtn");
+const filenameChip = document.getElementById("filenameChip");
+const uploadStatus = document.getElementById("uploadStatus");
+const storyList = document.getElementById("storyList");
+const shelfCount = document.getElementById("shelfCount");
+
+browseBtn.addEventListener("click", () => fileInput.click());
+
+fileInput.addEventListener("change", (e) => {
+  if (e.target.files.length) {
+    handleFile(e.target.files[0]);
+  }
+});
+
+dropzone.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  dropzone.classList.add("dragover");
+});
+
+dropzone.addEventListener("dragleave", (e) => {
+  e.preventDefault();
+  dropzone.classList.remove("dragover");
+});
+
+dropzone.addEventListener("drop", (e) => {
+  e.preventDefault();
+  dropzone.classList.remove("dragover");
+
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    handleFile(file);
+  }
+});
+
+async function handleFile(file) {
+  if (!file.name.toLowerCase().endsWith(".txt")) {
+    setStatus("Please choose a .txt file.", "error");
+    return;
+  }
+
+  filenameChip.textContent = file.name;
+  filenameChip.style.display = "inline-block";
+
+  setStatus("Getting upload link...");
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/get-upload-url`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        filename: file.name
+      })
+    });
+
+    if (!res.ok) {
+      throw new Error("Could not get upload link");
+    }
+
+    const data = await res.json();
+
+    if (!data.uploadUrl) {
+      throw new Error("uploadUrl missing from API response");
+    }
+
+    setStatus("Uploading your story...");
+
+    const putRes = await fetch(data.uploadUrl, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "text/plain"
+      },
+      body: file
+    });
+
+    if (!putRes.ok) {
+      throw new Error("Upload to S3 failed");
+    }
+
+    setStatus("Uploaded! Narration is being generated — wait few seconds.", "success");
+
+    fileInput.value = "";
+
+    setTimeout(loadStories, 2000);
+
+  } catch (err) {
+    console.error(err);
+    setStatus(err.message || "Something went wrong.", "error");
+  }
+}
+
+function setStatus(message, type) {
+  uploadStatus.textContent = message;
+  uploadStatus.className = "upload-status";
+
+  if (type) {
+    uploadStatus.classList.add(type);
+  }
+}
+
+async function loadStories() {
+  try {
+    const res = await fetch(`${API_BASE_URL}/stories`);
+
+    if (!res.ok) {
+      throw new Error("Could not load stories");
+    }
+
+    const stories = await res.json();
+
+    console.log("Stories from API:", stories);
+
+    renderStories(stories);
+
+  } catch (err) {
+    console.error(err);
+    storyList.innerHTML = `<div class="empty-shelf">Could not load stories. Check API Gateway /stories route.</div>`;
+  }
+}
+
+function renderStories(stories) {
+  shelfCount.textContent = stories.length
+    ? `${stories.length} ${stories.length === 1 ? "story" : "stories"}`
+    : "";
+
+  if (!stories.length) {
+    storyList.innerHTML = `<div class="empty-shelf">No stories yet — upload one above.</div>`;
+    return;
+  }
+
+  storyList.innerHTML = stories.map((story) => {
+    const status = (story.status || "PROCESSING").toLowerCase();
+
+    let label = "Being narrated...";
+    if (status === "completed") label = "Ready to listen";
+    if (status === "failed") label = "Couldn't be narrated";
+
+    let audioHtml = "";
+
+    if (story.audioUrl) {
+      audioHtml = `
+  <div>
+    <audio class="story-audio" controls preload="auto" src="${escapeHtml(story.audioUrl)}"></audio>
+    <br>
+    <a href="${escapeHtml(story.audioUrl)}" target="_blank">Open full audio</a>
+  </div>
+`;
+    }
+
+    return `
+      <div class="story-card">
+        <div class="ribbon ${status}"></div>
+
+        <div class="story-info">
+          <p class="story-title">${escapeHtml(story.title || "Untitled Story")}</p>
+          <div class="story-meta">
+            <span class="status-dot ${status}"></span>
+            <span class="status-label ${status}">${label}</span>
+          </div>
+        </div>
+
+        ${audioHtml}
+      </div>
+    `;
+  }).join("");
+}
+
+function escapeHtml(value) {
+  const div = document.createElement("div");
+  div.textContent = value;
+  return div.innerHTML;
+}
+
+loadStories();
+setInterval(loadStories, 6000);
+</script>
+
+</body>
+</html>
