@@ -52,3 +52,55 @@ Amazon Polly.
 
 ```powershell
 py -m http.server 5500
+
+<!-- STORY_SCREENSHOTS_START -->
+
+---
+
+## Application Screenshots
+
+### Storytelling Website
+
+<table>
+  <tr>
+    <td width="50%" align="center">
+      <strong>Application Home Page</strong>
+      <br><br>
+      <img
+        src="screenshots/01-storytelling-home.png"
+        alt="AWS Kids Storytelling App home page"
+        width="100%">
+    </td>
+
+    <td width="50%" align="center">
+      <strong>Story Upload Form</strong>
+      <br><br>
+      <img
+        src="screenshots/02-story-upload-form.png"
+        alt="Kids storytelling story upload form"
+        width="100%">
+    </td>
+  </tr>
+
+  <tr>
+    <td width="50%" align="center">
+      <strong>Generated Story List</strong>
+      <br><br>
+      <img
+        src="screenshots/03-generated-story-list.png"
+        alt="Generated stories list"
+        width="100%">
+    </td>
+
+    <td width="50%" align="center">
+      <strong>Generated Audio Player</strong>
+      <br><br>
+      <img
+        src="screenshots/04-story-audio-player.png"
+        alt="Generated story audio player"
+        width="100%">
+    </td>
+  </tr>
+</table>
+
+<!-- STORY_SCREENSHOTS_END -->
