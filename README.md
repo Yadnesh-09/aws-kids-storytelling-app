@@ -104,3 +104,22 @@ py -m http.server 5500
 </table>
 
 <!-- STORY_SCREENSHOTS_END -->
+---
+
+## Application Screenshots
+
+### Home Page
+
+![AWS Kids Storytelling home page](screenshots/01-storytelling-home.png)
+
+### Story Upload Form
+
+![Story upload form](screenshots/02-story-upload-form.png)
+
+### Generated Story List
+
+![Generated story list](screenshots/03-generated-story-list.png)
+
+### Story Audio Player
+
+![Generated story audio player](screenshots/04-story-audio-player.png)
