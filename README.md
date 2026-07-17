@@ -1,125 +1,59 @@
 # AWS Kids Storytelling App
 
-A serverless web application that converts text stories into audio using
-Amazon Polly.
+A serverless storytelling web application that converts children’s stories into speech using **Amazon Polly**.
 
-## Project Screenshots
+Users can enter a story, generate audio, view completed stories, and play the generated narration directly from the website.
 
-### Home Page
+## Live Demo
 
-![Home Page](home-page.png)
-
-### Story Upload
-
-![Story Upload](story-upload.png)
-
-### Generated Audio Stories
-
-![Generated Stories](generated-audio.png)
-
-## AWS Services Used
-
-- Amazon S3
-- AWS Lambda
-- Amazon API Gateway
-- Amazon Polly
-- Amazon DynamoDB
-- Amazon CloudWatch
-- AWS IAM
-
-## Application Flow
-
-1. The user uploads a `.txt` story file.
-2. API Gateway invokes the upload Lambda function.
-3. The story file is stored in Amazon S3.
-4. An S3 event triggers the processing Lambda.
-5. Amazon Polly converts the story into speech.
-6. The generated MP3 file is stored in S3.
-7. Story information is saved in DynamoDB.
-8. The website displays the generated audio story.
+[Open AWS Kids Storytelling App](https://yadnesh-09.github.io/aws-kids-storytelling-app/)
 
 ## Features
 
-- Upload text stories
-- Convert text to speech
-- Generate MP3 audio
-- Store files in Amazon S3
-- Display and play generated stories
-- Serverless AWS architecture
+- Upload or enter children’s stories
+- Convert story text into speech
+- Generate MP3 audio using Amazon Polly
+- Store generated audio files in Amazon S3
+- Store story information in Amazon DynamoDB
+- Display previously generated stories
+- Play generated audio directly from the website
 - Responsive web interface
+- Serverless AWS architecture
+- Public frontend hosted using GitHub Pages
 
-## Run Locally
+## AWS Services Used
 
-```powershell
-py -m http.server 5500
+- **Amazon API Gateway** — exposes backend API endpoints
+- **AWS Lambda** — processes stories and manages requests
+- **Amazon Polly** — converts text into natural speech
+- **Amazon S3** — stores generated MP3 audio files
+- **Amazon DynamoDB** — stores story details and processing status
+- **AWS IAM** — controls permissions between AWS services
+- **Amazon CloudWatch** — stores Lambda logs and errors
 
-<!-- STORY_SCREENSHOTS_START -->
+## Architecture
 
----
-
-## Application Screenshots
-
-### Storytelling Website
-
-<table>
-  <tr>
-    <td width="50%" align="center">
-      <strong>Application Home Page</strong>
-      <br><br>
-      <img
-        src="screenshots/01-storytelling-home.png"
-        alt="AWS Kids Storytelling App home page"
-        width="100%">
-    </td>
-
-    <td width="50%" align="center">
-      <strong>Story Upload Form</strong>
-      <br><br>
-      <img
-        src="screenshots/02-story-upload-form.png"
-        alt="Kids storytelling story upload form"
-        width="100%">
-    </td>
-  </tr>
-
-  <tr>
-    <td width="50%" align="center">
-      <strong>Generated Story List</strong>
-      <br><br>
-      <img
-        src="screenshots/03-generated-story-list.png"
-        alt="Generated stories list"
-        width="100%">
-    </td>
-
-    <td width="50%" align="center">
-      <strong>Generated Audio Player</strong>
-      <br><br>
-      <img
-        src="screenshots/04-story-audio-player.png"
-        alt="Generated story audio player"
-        width="100%">
-    </td>
-  </tr>
-</table>
-
-<!-- STORY_SCREENSHOTS_END -->
----
-
-## Application Screenshots
-
-### Home Page
-
-![AWS Kids Storytelling home page](screenshots/01-storytelling-home.png)
-
-### Story Upload Form
-
-![Story upload form](screenshots/02-story-upload-form.png)
-
-### Generated Story List
-
-![Generated story list](screenshots/03-generated-story-list.png)
-
-### Story Audio Player
-
-![Generated story audio player](screenshots/04-story-audio-player.png)
+```text
+User Browser
+     |
+     v
+GitHub Pages Frontend
+     |
+     v
+Amazon API Gateway
+     |
+     v
+AWS Lambda
+     |
+     +--------------------+
+     |                    |
+     v                    v
+Amazon Polly        Amazon DynamoDB
+Text-to-Speech      Story Metadata
+     |
+     v
+Amazon S3
+Generated MP3 Audio
+     |
+     v
+Website Audio Player
